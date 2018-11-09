@@ -89,19 +89,37 @@ class Picker:
 
         if self._zipname:
 
+            print("Unzip " + self._zipname + " to temp folder...", end='')
+
+            temp_extract = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                        "temp_extract/")
+
+            zip_foldername = self._zipname.split("/")[-1].rstrip(".zip") + "/"
+
+            temp_foldername = os.path.join(temp_extract, zip_foldername)
+
+            if not os.path.exists(temp_extract):
+                os.makedirs(temp_extract)
+
             with zipfile.ZipFile(self._zipname) as zip_file:
+                zip_file.extractall(temp_extract)
+            print("done")
 
-                for member in zip_file.namelist():
-                    filename = os.path.basename(member)
-                    # skip directories and random labels
-                    if not filename or filename is not image_name:
-                        continue
+            extracted_img = [x for x in os.listdir(temp_foldername) if x in image_name]
 
-                    # copy file (taken from zipfile's extract)
-                    source = zip_file.open(member)
-                    target = open(os.path.join(target_dir, filename), "wb")
-                    with source, target:
-                        shutil.copyfileobj(source, target)
+            image_count = 0
+
+            print("Moving target images to " + target_dir + "...", end='')
+            for target_image in extracted_img:
+                shutil.move(os.path.join(temp_foldername, target_image),
+                            os.path.join(target_dir, target_image))
+                image_count += 1
+            print("done")
+
+            print(self._zipname + ": extraction completed. " +
+                  str(image_count) + " images extracted.")
+
+            shutil.rmtree(temp_extract)
 
         else:
 
