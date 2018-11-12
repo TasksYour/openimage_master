@@ -14,11 +14,15 @@ def parser():
     """FUNCTION_DOCSTRING_PLACEHOLDER
     """
 
-    parse = argparse.ArgumentParser(description="Open Images Master")
-    parse.add_argument("-l", "--label", help="Label string.",
-                       nargs='?', default='person', type=str)
-    parse.add_argument("-f", "--folder", help="Target folder.",
-                       nargs='?', default='target', type=str)
+    parse = argparse.ArgumentParser(description="Open Images Master helper."
+                                                " Automatically extracts a "
+                                                "label from the Open Images "
+                                                "dataset")
+    parse.add_argument("-l", "--label", help="label string to extract",
+                       required=True, type=str)
+    parse.add_argument("-f", "--folder",
+                       help="absolute path of the target folder",
+                       required=True, type=str)
     args = vars(parse.parse_args())
 
     return (args['label'], args['folder'])
