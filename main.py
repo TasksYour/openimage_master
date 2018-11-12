@@ -60,6 +60,10 @@ def main():
         pick.extract_image([x[0] for x in class_meta], target_directory)
         print("*****************\n")
 
+    print("Writing metadata...")
+    translator.write_metadata(class_meta, label,
+                              os.path.join(target_directory, label + '.txt'))
+
     print("Extraction completed for label: " + label + ". Your files are in: " +
           target_directory)
 
