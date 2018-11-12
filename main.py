@@ -44,6 +44,12 @@ def main():
     pick = picker.Picker(os.path.join(current_path, "data/", "train_00.zip"),
                          target_directory)
 
+    print("Gathering class metadata...")
+    try:
+        class_meta = trs.get_class_meta(trs.classdict[label])
+    except KeyError as err:
+        raise type(err)('label \'' + label + '\' not found')
+
     print("Creating folder: " + pick.create_destination_folder() + "\n")
 
     for zip_number in range(9):
@@ -51,11 +57,7 @@ def main():
         pick.zipname = os.path.join(current_path, "data/",
                                     "train_0" + str(zip_number) + ".zip")
         print("Starting extraction")
-        try:
-            pick.extract_image([x[0] for x in trs.get_class_meta(trs.classdict[label])],
-                               target_directory)
-        except KeyError as err:
-            raise type(err)('label "' + label + '" not found')
+        pick.extract_image([x[0] for x in class_meta], target_directory)
         print("*****************\n")
 
     print("Extraction completed for label: " + label + ". Your files are in: " +
