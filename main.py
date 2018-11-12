@@ -51,8 +51,11 @@ def main():
         pick.zipname = os.path.join(current_path, "data/",
                                     "train_0" + str(zip_number) + ".zip")
         print("Starting extraction")
-        pick.extract_image([x[0] for x in trs.get_class_meta(trs.classdict[label])],
-                           target_directory)
+        try:
+            pick.extract_image([x[0] for x in trs.get_class_meta(trs.classdict[label])],
+                               target_directory)
+        except KeyError as err:
+            raise type(err)('label "' + label + '" not found')
         print("*****************\n")
 
     print("Extraction completed for label: " + label + ". Your files are in: " +
