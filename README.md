@@ -33,6 +33,7 @@ Create a data/ folder at the root of the git project and move the dataset zip fi
 ```bash
 mkdir openimages_master/data
 mv train_0*.zip openimages_master/data
+mv class-descriptions-boxable.csv train-annotations-bbox.csv openimages_master/data
 ```
 
 And that's it !
